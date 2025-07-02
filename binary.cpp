@@ -43,11 +43,11 @@ int main(){
   cin>>x;
   int arr[x];
   insertRandom(arr , x);
-  cout<<"\nUnsorted Array:\n";
-  displayArray(arr , x);
-  sort(arr, arr + x);
-  cout<<"\nSorted Array:\n";
-  displayArray(arr , x);
+  // cout<<"\nUnsorted Array:\n";
+  // displayArray(arr , x);
+  // sort(arr, arr + x);
+  // cout<<"\nSorted Array:\n";
+  // displayArray(arr , x);
 
   cout << "\nEnter the number to search: ";
   cin >> target;
