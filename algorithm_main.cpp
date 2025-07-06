@@ -112,7 +112,8 @@ int main(){
   int n, target;
   cout<<"Enter the size of array you want:";
   cin>>n;
-  int arr[n],arrMerge[n];
+  int* arr = new int[n];
+  int* arrMerge = new int[n];
 
   //Getting array od random number
   getRandomNumbers(arr,n);
@@ -154,6 +155,8 @@ int main(){
   cout<<"After using merge sort:\n";
   displayArray(arrMerge , n);
   cout<<"Time Taken by merge sorting : "<<mergeDuration.count()<<" microseconds"<<endl;
+  // Checking which sort is faster
+  cout << (quickDuration < mergeDuration ? "Quick Sort was faster\n" : "Merge Sort was faster\n");
 
   cout << "\nEnter the number to be searched: ";
   cin >> target;
@@ -176,7 +179,7 @@ int main(){
     cout<<"The element is not found"<<endl;
 
   }
-  cout<<"time taken  by binary searching : "<< binaryDuration.count() <<" microseconds \n";
+  cout<<"Time taken  by binary searching : "<< binaryDuration.count() <<" microseconds \n";
 
   //Exponential Searching.
   // Start time
@@ -197,6 +200,7 @@ int main(){
 
   }
   cout<<"Time taken  by exponential searching : "<< exponentialDuration.count() <<" microseconds \n";
-
+  //Checking which selection algorithm is faster
+  cout << (binaryDuration < exponentialDuration ? "Binary Search was faster.\n" : "Exponential Search was faster.\n");
   return 0;
 }
