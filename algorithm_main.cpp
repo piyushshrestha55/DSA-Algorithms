@@ -1,7 +1,7 @@
 #include<iostream>
 #include <cstdlib> // to randomaize the array elements
 #include <chrono> // To determine the time searching the element
-#include<utility>
+#include<algorithm>// To swap the array in different positions
 using namespace std;
 using namespace std::chrono;
 
