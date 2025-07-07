@@ -1,5 +1,6 @@
 #include<iostream>
 #include <cstdlib> // to randomaize the array elements
+#include<ctime> // For using time(0)
 #include <chrono> // To determine the time searching the element
 #include<algorithm>// To swap the array in different positions
 using namespace std;
@@ -118,7 +119,7 @@ int main(){
   //Getting array od random number
   getRandomNumbers(arr,n);
 
-  //Making another array with the same elemebts as the other
+  //Making another array with the same elements as the other
   for (int i = 0; i < n; i++)
   {
     arrMerge[i] =arr[i];
