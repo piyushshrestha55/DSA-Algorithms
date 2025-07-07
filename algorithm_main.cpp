@@ -130,7 +130,7 @@ int main(){
 
   // Start time
   auto quickStart = high_resolution_clock::now();
-
+  //Quick Sort
   quickSort(arr , 0 , n-1);
   // End time
   auto quickStop = high_resolution_clock::now();
@@ -145,6 +145,7 @@ int main(){
 
   //start time
   auto mergeStart = high_resolution_clock::now();
+  //Merge Sort
   mergeSort(arrMerge , 0 , n-1);
   //end time
   auto mergeStop = high_resolution_clock::now();
