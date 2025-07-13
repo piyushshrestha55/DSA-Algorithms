@@ -139,7 +139,7 @@ int main(){
   // End time
   auto quickStop = high_resolution_clock::now();
 
-  // Duration in microseconds
+  // Duration in nanoseconds
   auto quickDuration = duration_cast<nanoseconds>(quickStop - quickStart);
 
   //sorting the array using quick sort
@@ -176,7 +176,7 @@ int main(){
   // End time
   auto binaryStop = high_resolution_clock::now();
 
-  // Duration in microseconds
+  // Duration in nanoseconds
   auto binaryDuration = duration_cast<nanoseconds>(binaryStop - binaryStart);
   if(result != -1){
     cout<<"The element is found at the index "<<result<<endl;
@@ -193,7 +193,7 @@ int main(){
   // End time
   auto exponentialStop = high_resolution_clock::now();
 
-  // Duration in microseconds
+  // Duration in nanoseconds
   auto exponentialDuration = duration_cast<nanoseconds>(exponentialStop - exponentialStart);
 
   if(result != -1){
