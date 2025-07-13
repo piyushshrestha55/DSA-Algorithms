@@ -7,61 +7,45 @@ using namespace std;
 using namespace std::chrono;
 
 //Binary Search
-void binarySearch(int arr[],int left,int right, int target){
-  while (left <= right)
-  {
+int binarySearch(int arr[],int left,int right, int target){
+  int index;
+  if (left > right)
+      index = -1;
+  else{
+
     int mid = left + (right-left)/2;
     if(arr[mid] == target){
-      cout<<"The element is found at index "<<mid<<endl;
-      return;
+      index = mid;
     }
     else if (arr[mid] < target)
     {
-      left = mid + 1;
+      index = binarySearch(arr , mid+1 , right , target);// Recursively calling the binary algorithm
     }
     else{
-      right = mid-1;
+      index = binarySearch(arr , left , mid-1 , target);
     }
 
   }
-  cout<<"The element is not found."<<endl;; // For not found cases
+  return index;
 }
 
+
 //Exponential Search
-void exponentialSearch(int arr[],int n , int target){
-  if(n == 0){
-    cout<<"The element is not found."<<endl;//for not found cases
-    return;
+int exponentialSearch(int arr[],int n , int target){
+  if(n == 0){//for not found cases
+    return -1;
   }
   else if(arr[0] == target){
-    cout<<"The element is found at index 0."<<endl;
-    return;
+    return 0;
   }
 
   int i = 1;
+  //Finding range for binary
   while (i < n && arr[i] < target)
   {
     i *= 2;
   }
-  int left = i/2;
-  int right = min(i,n-1);
-  while (left <= right)
-  {
-    int mid = left + (right-left)/2;
-    if(arr[mid] == target){
-      cout<<"The element is found at index "<<mid<<endl;
-      return;
-    }
-    else if (arr[mid] < target)
-    {
-      left = mid + 1;
-    }
-    else{
-      right = mid-1;
-    }
-
-  }
-  cout<<"The element is not found"<<endl;; //for not found cases
+  return binarySearch(arr , i/2 , min(i,n-1),target );// calling the binary search
 
 }
 
@@ -83,22 +67,9 @@ void displayArray(int arr[],int n){
 }
 
 //For Quick sort
+// Quick Sort
 int partition(int arr[], int low, int high) {
-    // Median-of-three pivot selection
-    int mid = low + (high - low) / 2;
-
-    // Find median of arr[low], arr[mid], arr[high]
-    if (arr[mid] < arr[low])
-        swap(arr[mid], arr[low]);
-    if (arr[high] < arr[low])
-        swap(arr[high], arr[low]);
-    if (arr[high] < arr[mid])
-        swap(arr[high], arr[mid]);
-
-    // Now arr[mid] is median — use as pivot
-    swap(arr[mid], arr[high]);
-    int pivot = arr[high];
-
+    int pivot = arr[high];  // Simple pivot to reduce overhead
     int i = low - 1;
     for (int j = low; j < high; j++) {
         if (arr[j] < pivot) {
@@ -106,11 +77,9 @@ int partition(int arr[], int low, int high) {
             swap(arr[i], arr[j]);
         }
     }
-
     swap(arr[i + 1], arr[high]);
     return i + 1;
 }
-
 
 void quickSort(int arr[], int low, int high) {
   if (low < high) {
@@ -121,23 +90,20 @@ void quickSort(int arr[], int low, int high) {
 }
 
 //Merge Sort
-void merge(int arr[], int left, int mid, int right){
-  int n1 = mid - left + 1;
-  int n2 = right - mid;
-  int L[n1], R[n2];
+void merge(int arr[], int left, int mid, int right) {
+    int n1 = mid - left + 1, n2 = right - mid;
+    int* L = new int[n1], *R = new int[n2];
+    for (int i = 0; i < n1; i++) L[i] = arr[left + i];
+    for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
 
-  for (int i = 0; i < n1; i++)
-    L[i] = arr[left + i];
-
-  for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
     int i = 0, j = 0, k = left;
-  while (i < n1 && j < n2) {
-    arr[k++] = (L[i] <= R[j]) ? L[i++] : R[j++];
-  }
-  while (i < n1)
-    arr[k++] = L[i++];
-  while (j < n2)
-    arr[k++] = R[j++];
+    while (i < n1 && j < n2)
+        arr[k++] = (L[i] <= R[j]) ? L[i++] : R[j++];
+    while (i < n1) arr[k++] = L[i++];
+    while (j < n2) arr[k++] = R[j++];
+
+    delete[] L;
+    delete[] R;
 }
 
 void mergeSort(int arr[], int left, int right) {
@@ -158,7 +124,7 @@ int main(){
 
   getRandomNumbers(arr, n);
 
-// Clone into arr and arrMerge
+// Clone arr into arrMerge
   for (int i = 0; i < n; i++) {
       arrMerge[i] = arr[i];
   }
@@ -174,12 +140,12 @@ int main(){
   auto quickStop = high_resolution_clock::now();
 
   // Duration in microseconds
-  auto quickDuration = duration_cast<microseconds>(quickStop - quickStart);
+  auto quickDuration = duration_cast<nanoseconds>(quickStop - quickStart);
 
   //sorting the array using quick sort
   cout<<"After quick sort:\n";
   displayArray(arr , n);
-  cout<<"Time Taken by quick sorting : "<<quickDuration.count()<<" microseconds"<<endl;
+  cout<<"Time Taken by quick sorting : "<<quickDuration.count()<<" nanoseconds"<<endl;
 
   //start time
   auto mergeStart = high_resolution_clock::now();
@@ -188,44 +154,54 @@ int main(){
   //end time
   auto mergeStop = high_resolution_clock::now();
 
-  //duration in ms
-  auto mergeDuration = duration_cast<microseconds>(mergeStop - mergeStart);
+  //duration in ns
+  auto mergeDuration = duration_cast<nanoseconds>(mergeStop - mergeStart);
 
 
   cout<<"After using merge sort:\n";
   displayArray(arrMerge , n);
-  cout<<"Time Taken by merge sorting : "<<mergeDuration.count()<<" microseconds"<<endl;
+  cout<<"Time Taken by merge sorting : "<<mergeDuration.count()<<" nanoseconds"<<endl;
   // Checking which sort is faster
   cout << (quickDuration < mergeDuration ? "Quick Sort was faster\n" : "Merge Sort was faster\n");
 
+
   cout << "\nEnter the number to be searched: ";
   cin >> target;
-  cout<<endl;
+
   // Start time
   auto binaryStart = high_resolution_clock::now();
   //Binary Search
-  binarySearch(arr , 0 , n-1 , target);
+  int result = binarySearch(arr , 0 , n-1 , target);
 
   // End time
   auto binaryStop = high_resolution_clock::now();
 
   // Duration in microseconds
-  auto binaryDuration = duration_cast<microseconds>(binaryStop - binaryStart);
-
-  cout<<"Time taken  by binary searching : "<< binaryDuration.count() <<" microseconds \n";
+  auto binaryDuration = duration_cast<nanoseconds>(binaryStop - binaryStart);
+  if(result != -1){
+    cout<<"The element is found at the index "<<result<<endl;
+  }
+  else
+    cout<<"The element is not found.\n";
+  cout<<"Time taken  by binary searching : "<< binaryDuration.count() <<" nanoseconds \n";
 
   //Exponential Searching.
   // Start time
   auto exponentialStart = high_resolution_clock::now();
-  exponentialSearch(arrMerge ,n, target);
+  result = exponentialSearch(arrMerge ,n, target);
 
   // End time
   auto exponentialStop = high_resolution_clock::now();
 
   // Duration in microseconds
-  auto exponentialDuration = duration_cast<microseconds>(exponentialStop - exponentialStart);
+  auto exponentialDuration = duration_cast<nanoseconds>(exponentialStop - exponentialStart);
 
-  cout<<"Time taken  by exponential searching : "<< exponentialDuration.count() <<" microseconds \n";
+  if(result != -1){
+    cout<<"The element is found at the index "<<result<<endl;
+  }
+  else
+    cout<<"The element is not found.\n";
+  cout<<"Time taken  by exponential searching : "<< exponentialDuration.count() <<" nanoseconds \n";
   //Checking which selection algorithm is faster
   cout << (binaryDuration < exponentialDuration ? "Binary Search was faster.\n" : "Exponential Search was faster.\n");
   return 0;
